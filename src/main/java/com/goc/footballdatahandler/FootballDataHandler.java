@@ -33,7 +33,7 @@ public class FootballDataHandler {
         SpringApplication.run(FootballDataHandler.class, args);
     }
 
-    @Bean
+/*    @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
     }
@@ -59,7 +59,7 @@ public class FootballDataHandler {
 
             log.info(response.getBody().getMatches().get(0).toString());
         };
-    }
+    }*/
 
 
 
