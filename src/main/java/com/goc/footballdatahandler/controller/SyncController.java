@@ -2,6 +2,8 @@ package com.goc.footballdatahandler.controller;
 
 import com.goc.footballdatahandler.entity.Matches;
 import com.goc.footballdatahandler.entity.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpEntity;
@@ -20,6 +22,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RestController
 public class SyncController {
 
+    private static final Logger log = LoggerFactory.getLogger(SyncController.class);
+
 /*    @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
@@ -27,7 +31,8 @@ public class SyncController {
 
 
     @RequestMapping("api/sync")
-    public Response sync(@RequestParam(value="season", defaultValue="2018") String season) {
+    public Response sync(@RequestParam(value="season", defaultValue="2018") String season,
+                         @RequestParam(value="tournament", defaultValue="PL") String tournament) {
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -37,13 +42,15 @@ public class SyncController {
         //HttpEntity entity = new HttpEntity(headers);
 
         UriComponentsBuilder builder = UriComponentsBuilder
-                .fromUriString("http://api.football-data.org/v2/competitions/PL/matches")
+                .fromUriString("http://api.football-data.org/v2/competitions/"+tournament+"/matches")
                 // Add query parameter
                 .queryParam("season", season);
 
         // Send request with GET method, and Headers.
         ResponseEntity<Matches> response = restTemplate.exchange(builder.toUriString(), //
                 HttpMethod.GET, httpEntity, Matches.class);
+
+        log.info(response.getBody().getMatches().get(0).toString());
 
         return new Response("200 OK",
                 response.getBody().toString());
