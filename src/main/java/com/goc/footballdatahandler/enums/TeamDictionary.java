@@ -1,5 +1,8 @@
 package com.goc.footballdatahandler.enums;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by kostya on 9/29/18.
  */
@@ -49,12 +52,42 @@ public enum TeamDictionary {
     ENG039(385),
     ENG040(65),
     ENG041(357),
-    ENG042(59);
+    ENG042(59),
+
+    //Wales
+    WLS001(715),
+    WLS002(72);
 
     private Integer footballDataId;
     TeamDictionary(Integer id){
         this.footballDataId=id;
     };
 
+    private static final Map<Integer, TeamDictionary> LOOKUP_MAP;
 
+    static {
+        LOOKUP_MAP = new HashMap<Integer, TeamDictionary>();
+        for (TeamDictionary teamCode : TeamDictionary.values()) {
+            LOOKUP_MAP.put(teamCode.getFootballDataId(), teamCode);
+        }
+    }
+
+    private TeamDictionary(int footballDataId) {
+        this.footballDataId = footballDataId;
+    }
+
+    public Integer getFootballDataId() {
+        return footballDataId;
+    }
+
+    public static TeamDictionary retrieveByFootballDataId(int n) {
+        return LOOKUP_MAP.get(n);
+    }
+
+    @Override
+    public String toString() {
+        return "TeamDictionary{" +
+                "footballDataId=" + footballDataId +
+                '}';
+    }
 }

@@ -2,6 +2,7 @@ package com.goc.footballdatahandler.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -10,7 +11,8 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Match {
     private Integer id;
-    private Date utcDate;
+    private Season season;
+    private Calendar utcDate;
     private Integer matchday;
     private Team homeTeam;
     private Team awayTeam;
@@ -27,11 +29,15 @@ public class Match {
         this.id = id;
     }
 
-    public Date getUtcDate() {
+    public Season getSeason() { return season; }
+
+    public void setSeason(Season season) { this.season = season; }
+
+    public Calendar getUtcDate() {
         return utcDate;
     }
 
-    public void setUtcDate(Date utcDate) {
+    public void setUtcDate(Calendar utcDate) {
         this.utcDate = utcDate;
     }
 
@@ -71,6 +77,7 @@ public class Match {
     public String toString() {
         return "Match{" +
                 "id=" + id +
+                ", season=" + season +
                 ", utcDate=" + utcDate +
                 ", matchday=" + matchday +
                 ", homeTeam=" + homeTeam +

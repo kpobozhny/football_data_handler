@@ -9,9 +9,18 @@ import java.util.List;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Matches {
+    private Competition competition;
     private List<Match> matches;
 
     public Matches() {
+    }
+
+    public Competition getCompetition() {
+        return competition;
+    }
+
+    public void setCompetition(Competition competition) {
+        this.competition = competition;
     }
 
     public List<Match> getMatches() {
@@ -25,7 +34,8 @@ public class Matches {
     @Override
     public String toString() {
         return "Matches{" +
-                "matches=" + matches +
+                "competition=" + competition +
+                ", matches=" + matches +
                 '}';
     }
 }
