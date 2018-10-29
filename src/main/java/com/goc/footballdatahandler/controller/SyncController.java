@@ -3,7 +3,6 @@ package com.goc.footballdatahandler.controller;
 import com.goc.footballdatahandler.entity.Match;
 import com.goc.footballdatahandler.entity.Matches;
 import com.goc.footballdatahandler.entity.Response;
-import com.goc.footballdatahandler.enums.TeamDictionary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static com.goc.footballdatahandler.dictionary.FootballDataAPI.teamMap;
+import static com.goc.footballdatahandler.dictionary.FootballDataAPI.tournamentMap;
+
 
 /**
  * Created by kostya on 9/29/18.
@@ -28,12 +30,6 @@ import java.util.*;
 @RestController
 public class SyncController {
 
-    private static final Map<String, String> tournamentDictionary;
-    static
-    {
-        tournamentDictionary = new HashMap<String, String>();
-        tournamentDictionary.put("PL", "ENG_PREM_LEAGUE");
-    }
 
     private static final Logger log = LoggerFactory.getLogger(SyncController.class);
 
@@ -42,18 +38,18 @@ public class SyncController {
     JdbcTemplate jdbcTemplate;
 
     @RequestMapping("api/sync")
-    public Response sync(@RequestParam(value="season", defaultValue="2018") String season,
-                         @RequestParam(value="tournament", defaultValue="PL") String tournament,
-                         @RequestParam(value="matchday", defaultValue="") String matchday) {
+    public Response sync(@RequestParam(value = "season", defaultValue = "2018") String season,
+                         @RequestParam(value = "tournament", defaultValue = "PL") String tournament,
+                         @RequestParam(value = "matchday", defaultValue = "") String matchday) {
 
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Auth-Token", "f59ef304bfaa44f6bfe56e13ad7290a4");
-        HttpEntity<String> httpEntity = new HttpEntity <String> (headers);
+        HttpEntity<String> httpEntity = new HttpEntity<String>(headers);
 
         UriComponentsBuilder builder = UriComponentsBuilder
-                .fromUriString("http://api.football-data.org/v2/competitions/"+tournament+"/matches")
+                .fromUriString("http://api.football-data.org/v2/competitions/" + tournament + "/matches")
                 // Add query parameter
                 .queryParam("season", season)
                 .queryParam("matchday", matchday);
@@ -65,33 +61,44 @@ public class SyncController {
         List<Match> matches = response.getBody().getMatches();
         String competitionCode = response.getBody().getCompetition().getCode();
 
-        List<Object[]> batch = new ArrayList<Object[]>();
+        List<Object[]> batchInsert = new ArrayList<Object[]>();
+        List<Object[]> batchUpdate = new ArrayList<Object[]>();
+
         for (Match match : matches) {
             String resultCode = competitionCode +
                     match.getSeason().getStartDate().get(Calendar.YEAR) +
                     match.getMatchday() +
-                    TeamDictionary.retrieveByFootballDataId(match.getHomeTeam().getId()).name()+
-                    TeamDictionary.retrieveByFootballDataId(match.getAwayTeam().getId()).name();
+                    teamMap.get(match.getHomeTeam().getId().toString()) +
+                    teamMap.get(match.getAwayTeam().getId().toString());
 
 
 
-            Object[] values = new Object[] {
+            Object[] insertValues = new Object[]{
                     resultCode,
                     new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(match.getUtcDate().getTime()),
-                    "S"+match.getSeason().getStartDate().get(Calendar.YEAR)+(match.getSeason().getStartDate().get(Calendar.YEAR)+1),
-                    tournamentDictionary.get(competitionCode),
+                    "S" + match.getSeason().getStartDate().get(Calendar.YEAR) + (match.getSeason().getStartDate().get(Calendar.YEAR) + 1),
+                    tournamentMap.get(competitionCode),
                     match.getMatchday(),
-                    TeamDictionary.retrieveByFootballDataId(match.getHomeTeam().getId()).name(),
-                    TeamDictionary.retrieveByFootballDataId(match.getAwayTeam().getId()).name(),
+                    teamMap.get(match.getHomeTeam().getId().toString()),
+                    teamMap.get(match.getAwayTeam().getId().toString()),
                     match.getScore().getFullTime().getHomeTeam(),
                     match.getScore().getFullTime().getAwayTeam()
             };
 
-            for (Object item: values) {
-                System.out.println(item);
-            }
+            Object[] updateValues = new Object[]{
 
-            batch.add(values);
+                    new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(match.getUtcDate().getTime()),
+                    match.getScore().getFullTime().getHomeTeam(),
+                    match.getScore().getFullTime().getAwayTeam(),
+                    resultCode
+            };
+
+/*            for (Object item : insertValues) {
+                System.out.println(item);
+            }*/
+
+            batchInsert.add(insertValues);
+            batchUpdate.add(updateValues);
         }
 
         try {
@@ -105,14 +112,19 @@ public class SyncController {
                     "hostTeamCode, " +
                     "guestTeamCode, " +
                     "goalsByHost, " +
-                    "goalsByGuest) VALUES (?,?,?,?,?,?,?,?,?)", batch);
+                    "goalsByGuest) VALUES (?,?,?,?,?,?,?,?,?)", batchInsert);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Failed to insert");
-        }
-        //log.info(response.getBody().getMatches().get(0).toString());
 
-        //jdbcTemplate.update("INSERT INTO TestTeam(teamCode, teamName, teamCountryCode) VALUES (?,?,?)", new Object[]{"ENG004", "Arsenal", "ENG"} );
+            try {
+
+                jdbcTemplate.batchUpdate("UPDATE Result SET date=?, goalsByHost=?, goalsByGuest=? WHERE resultCode=?", batchUpdate);
+
+            } catch (Exception ee) {
+                System.out.println("Failed to update");
+            }
+        }
 
 
         return new Response("200 OK",
