@@ -1,5 +1,6 @@
 package com.goc.footballdatahandler.controller;
 
+import com.goc.footballdatahandler.database.Result;
 import com.goc.footballdatahandler.entity.Match;
 import com.goc.footballdatahandler.entity.Matches;
 import com.goc.footballdatahandler.entity.Response;
@@ -37,6 +38,9 @@ public class SyncController {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    Result result;
+
     @RequestMapping("api/sync")
     public Response sync(@RequestParam(value = "season", defaultValue = "2018") String season,
                          @RequestParam(value = "tournament", defaultValue = "PL") String tournament,
@@ -55,80 +59,17 @@ public class SyncController {
                 .queryParam("matchday", matchday);
 
         // Send request with GET method, and Headers.
-        ResponseEntity<Matches> response = restTemplate.exchange(builder.toUriString(), //
-                HttpMethod.GET, httpEntity, Matches.class);
+        ResponseEntity<Matches> response = restTemplate.exchange(builder.toUriString(), HttpMethod.GET, httpEntity, Matches.class);
 
         List<Match> matches = response.getBody().getMatches();
         String competitionCode = response.getBody().getCompetition().getCode();
 
-        List<Object[]> batchInsert = new ArrayList<Object[]>();
-        List<Object[]> batchUpdate = new ArrayList<Object[]>();
+        boolean success = result.updateByFootballDataApi(competitionCode, matches);
 
-        for (Match match : matches) {
-            String resultCode = competitionCode +
-                    match.getSeason().getStartDate().get(Calendar.YEAR) +
-                    match.getMatchday() +
-                    teamMap.get(match.getHomeTeam().getId().toString()) +
-                    teamMap.get(match.getAwayTeam().getId().toString());
+        if (success) {
+            return new Response("200 OK", response.getBody().toString());
+        } else return new Response("500", "Failed to update data!");
 
-
-
-            Object[] insertValues = new Object[]{
-                    resultCode,
-                    new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(match.getUtcDate().getTime()),
-                    "S" + match.getSeason().getStartDate().get(Calendar.YEAR) + (match.getSeason().getStartDate().get(Calendar.YEAR) + 1),
-                    tournamentMap.get(competitionCode),
-                    match.getMatchday(),
-                    teamMap.get(match.getHomeTeam().getId().toString()),
-                    teamMap.get(match.getAwayTeam().getId().toString()),
-                    match.getScore().getFullTime().getHomeTeam(),
-                    match.getScore().getFullTime().getAwayTeam()
-            };
-
-            Object[] updateValues = new Object[]{
-
-                    new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(match.getUtcDate().getTime()),
-                    match.getScore().getFullTime().getHomeTeam(),
-                    match.getScore().getFullTime().getAwayTeam(),
-                    resultCode
-            };
-
-/*            for (Object item : insertValues) {
-                System.out.println(item);
-            }*/
-
-            batchInsert.add(insertValues);
-            batchUpdate.add(updateValues);
-        }
-
-        try {
-
-            jdbcTemplate.batchUpdate("INSERT INTO Result(" +
-                    "resultCode, " +
-                    "date, " +
-                    "seasonCode, " +
-                    "tournamentCode, " +
-                    "matchDay, " +
-                    "hostTeamCode, " +
-                    "guestTeamCode, " +
-                    "goalsByHost, " +
-                    "goalsByGuest) VALUES (?,?,?,?,?,?,?,?,?)", batchInsert);
-
-        } catch (Exception e) {
-            System.out.println("Failed to insert");
-
-            try {
-
-                jdbcTemplate.batchUpdate("UPDATE Result SET date=?, goalsByHost=?, goalsByGuest=? WHERE resultCode=?", batchUpdate);
-
-            } catch (Exception ee) {
-                System.out.println("Failed to update");
-            }
-        }
-
-
-        return new Response("200 OK",
-                response.getBody().toString());
     }
 
 }

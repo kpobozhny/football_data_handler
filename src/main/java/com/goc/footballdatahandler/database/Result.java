@@ -88,8 +88,6 @@ public class Result {
 
         } catch (Exception e) {
 
-            log.info("Failed to insert results");
-
             try {
 
                 jdbcTemplate.batchUpdate("UPDATE Result SET date=?, goalsByHost=?, goalsByGuest=? WHERE resultCode=?", batchUpdate);
