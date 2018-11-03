@@ -17,13 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.text.SimpleDateFormat;
+import static com.goc.footballdatahandler.dictionary.FootballDataAPI.getTournamentByValue;
 import java.util.*;
-
-import static com.goc.footballdatahandler.dictionary.FootballDataAPI.teamMap;
-import static com.goc.footballdatahandler.dictionary.FootballDataAPI.tournamentMap;
-
 
 /**
  * Created by kostya on 9/29/18.
@@ -41,7 +36,7 @@ public class SyncController {
 
     @RequestMapping("api/sync")
     public Response sync(@RequestParam(value = "season", defaultValue = "2018") String season,
-                         @RequestParam(value = "tournament", defaultValue = "PL") String tournament,
+                         @RequestParam(value = "tournament", defaultValue = "ENPL") String tournament,
                          @RequestParam(value = "matchday", defaultValue = "") String matchday) {
 
         RestTemplate restTemplate = new RestTemplate();
@@ -51,7 +46,7 @@ public class SyncController {
         HttpEntity<String> httpEntity = new HttpEntity<String>(headers);
 
         UriComponentsBuilder builder = UriComponentsBuilder
-                .fromUriString("http://api.football-data.org/v2/competitions/" + tournament + "/matches")
+                .fromUriString("http://api.football-data.org/v2/competitions/" + getTournamentByValue(tournament) + "/matches")
                 // Add query parameter
                 .queryParam("season", season)
                 .queryParam("matchday", matchday);

@@ -15,9 +15,101 @@ public class FootballDataAPI {
     {
         tournamentMap = new HashMap<String, String>();
         tournamentMap.put("PL", "ENPL");
+        tournamentMap.put("BL1", "DEBL");
+        tournamentMap.put("SA", "ITSA");
+        tournamentMap.put("PD", "ESLL");
+        tournamentMap.put("FL1", "FRLG");
+
+        teamMap = new HashMap<String, String>();
+
+        //France Teams (Season 2018-19)
+        teamMap.put("511", "FRA026");
+        teamMap.put("514", "FRA037");
+        teamMap.put("516", "FRA005");
+        teamMap.put("518", "FRA030");
+        teamMap.put("521", "FRA007");
+        teamMap.put("522", "FRA013");
+        teamMap.put("523", "FRA024");
+        teamMap.put("524", "FRA017");
+        teamMap.put("526", "FRA002");
+        teamMap.put("527", "FRA039");
+        teamMap.put("528", "FRA028");
+        teamMap.put("529", "FRA033");
+        teamMap.put("530", "FRA034");
+        teamMap.put("532", "FRA003");
+        teamMap.put("538", "FRA022");
+        teamMap.put("543", "FRA020");
+        teamMap.put("547", "FRA029");
+        teamMap.put("548", "FRA012");
+        teamMap.put("556", "FRA015");
+        teamMap.put("576", "FRA032");
+
+        //Spain Teams (Season 2018-19)
+        teamMap.put("77", "ESP037");
+        teamMap.put("78", "ESP039");
+        teamMap.put("80", "ESP024");
+        teamMap.put("81", "ESP027");
+        teamMap.put("82", "ESP007");
+        teamMap.put("86", "ESP018");
+        teamMap.put("87", "ESP028");
+        teamMap.put("88", "ESP004");
+        teamMap.put("90", "ESP020");
+        teamMap.put("92", "ESP040");
+        teamMap.put("94", "ESP041");
+        teamMap.put("95", "ESP042");
+        teamMap.put("250", "ESP015");
+        teamMap.put("263", "ESP023");
+        teamMap.put("278", "ESP032");
+        teamMap.put("298", "ESP016");
+        teamMap.put("299", "ESP003");
+        teamMap.put("558", "ESP022");
+        teamMap.put("559", "ESP033");
+        teamMap.put("745", "ESP008");
+
+
+        //Germany Teams (Season 2018-19)
+        teamMap.put("2", "DEU175");
+        teamMap.put("3", "DEU031");
+        teamMap.put("4", "DEU228");
+        teamMap.put("5", "DEU137");
+        teamMap.put("6", "DEU094");
+        teamMap.put("8", "DEU058");
+        teamMap.put("9", "DEU047");
+        teamMap.put("10", "DEU219");
+        teamMap.put("11", "DEU072");
+        teamMap.put("12", "DEU109");
+        teamMap.put("14", "DEU198");
+        teamMap.put("15", "DEU067");
+        teamMap.put("16", "DEU224");
+        teamMap.put("17", "DEU063");
+        teamMap.put("18", "DEU165");
+        teamMap.put("19", "DEU091");
+        teamMap.put("24", "DEU092");
+        teamMap.put("721", "DEU160");
+
+        //Italy Teams (Season 2018-19)
+        teamMap.put("98", "ITA016");
+        teamMap.put("99", "ITA046");
+        teamMap.put("100", "ITA055");
+        teamMap.put("102", "ITA021");
+        teamMap.put("103", "ITA024");
+        teamMap.put("104", "ITA059");
+        teamMap.put("106", "ITA085");
+        teamMap.put("107", "ITA007");
+        teamMap.put("108", "ITA079");
+        teamMap.put("109", "ITA027");
+        teamMap.put("110", "ITA017");
+        teamMap.put("112", "ITA023");
+        teamMap.put("113", "ITA062");
+        teamMap.put("115", "ITA092");
+        teamMap.put("445", "ITA043");
+        teamMap.put("470", "ITA031");
+        teamMap.put("471", "ITA090");
+        teamMap.put("584", "ITA093");
+        teamMap.put("586", "ITA096");
+        teamMap.put("1107", "ITA037");
 
         //England Teams
-        teamMap = new HashMap<String, String>();
         teamMap.put("63", "ENG001");
         teamMap.put("328", "ENG002");
         teamMap.put("1044", "ENG003");
@@ -64,5 +156,15 @@ public class FootballDataAPI {
         //Wales Teams
         teamMap.put("715", "WLS001");
         teamMap.put("72", "WLS002");
+
+    }
+
+    public static String getTournamentByValue(String value) {
+        for (String o : tournamentMap.keySet()) {
+            if (tournamentMap.get(o).equals(value)) {
+                return o;
+            }
+        }
+        return null;
     }
 }
