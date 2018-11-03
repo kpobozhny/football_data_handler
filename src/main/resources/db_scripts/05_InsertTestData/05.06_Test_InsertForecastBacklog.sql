@@ -1,0 +1,22 @@
+INSERT INTO ForecastBacklog(seasonCode, contestCode, contestMatchDay, resultCode) VALUES 
+    ('Season001', 'KSTT_League', 1, 'ENPL20181ENG013ENG035'),
+    ('Season001', 'KSTT_League', 1, 'ENPL20181ENG004ENG010'),
+    ('Season001', 'KSTT_League', 1, 'ENPL20181ENG003WLS001'),
+    ('Season001', 'KSTT_League', 1, 'ENPL20181ENG001ENG037'),
+    ('Season001', 'KSTT_League', 1, 'ENPL20181ENG029ENG008'),
+    ('Season001', 'KSTT_League', 1, 'ENPL20181ENG016ENG038'),
+    ('Season001', 'KSTT_League', 1, 'ENPL20181ENG021ENG027'),
+    ('Season001', 'KSTT_League', 1, 'ENPL20181ENG028ENG012'),
+    ('Season001', 'KSTT_League', 1, 'ENPL20181ENG032ENG002'),
+    ('Season001', 'KSTT_League', 1, 'ENPL20181ENG018ENG040'), 
+
+    ('Season001', 'KSTT_League', 2, 'ENPL20182WLS001ENG004'),
+    ('Season001', 'KSTT_League', 2, 'ENPL20182ENG027ENG032'),
+    ('Season001', 'KSTT_League', 2, 'ENPL20182ENG002ENG029'),
+    ('Season001', 'KSTT_League', 2, 'ENPL20182ENG035ENG021'),
+    ('Season001', 'KSTT_League', 2, 'ENPL20182ENG012ENG003'),
+    ('Season001', 'KSTT_League', 2, 'ENPL20182ENG010ENG001'),
+    ('Season001', 'KSTT_League', 2, 'ENPL20182ENG038ENG018'),
+    ('Season001', 'KSTT_League', 2, 'ENPL20182ENG040ENG016'),
+    ('Season001', 'KSTT_League', 2, 'ENPL20182ENG008ENG013'),
+    ('Season001', 'KSTT_League', 2, 'ENPL20182ENG037ENG028');  

@@ -14,7 +14,7 @@ public class FootballDataAPI {
     static
     {
         tournamentMap = new HashMap<String, String>();
-        tournamentMap.put("PL", "ENG_PREM_LEAGUE");
+        tournamentMap.put("PL", "ENPL");
 
         //England Teams
         teamMap = new HashMap<String, String>();

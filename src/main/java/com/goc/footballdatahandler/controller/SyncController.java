@@ -31,9 +31,7 @@ import static com.goc.footballdatahandler.dictionary.FootballDataAPI.tournamentM
 @RestController
 public class SyncController {
 
-
     private static final Logger log = LoggerFactory.getLogger(SyncController.class);
-
 
     @Autowired
     JdbcTemplate jdbcTemplate;

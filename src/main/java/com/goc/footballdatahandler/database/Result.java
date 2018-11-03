@@ -34,13 +34,11 @@ public class Result {
         List<Object[]> batchUpdate = new ArrayList<Object[]>();
 
         for (Match match : matches) {
-            String resultCode = competitionCode +
+            String resultCode = tournamentMap.get(competitionCode) +
                     match.getSeason().getStartDate().get(Calendar.YEAR) +
                     match.getMatchday() +
                     teamMap.get(match.getHomeTeam().getId().toString()) +
                     teamMap.get(match.getAwayTeam().getId().toString());
-
-
 
             Object[] insertValues = new Object[]{
                     resultCode,
@@ -55,16 +53,11 @@ public class Result {
             };
 
             Object[] updateValues = new Object[]{
-
                     new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(match.getUtcDate().getTime()),
                     match.getScore().getFullTime().getHomeTeam(),
                     match.getScore().getFullTime().getAwayTeam(),
                     resultCode
             };
-
-/*            for (Object item : insertValues) {
-                System.out.println(item);
-            }*/
 
             batchInsert.add(insertValues);
             batchUpdate.add(updateValues);
@@ -87,15 +80,11 @@ public class Result {
             return true;
 
         } catch (Exception e) {
-
             try {
-
                 jdbcTemplate.batchUpdate("UPDATE Result SET date=?, goalsByHost=?, goalsByGuest=? WHERE resultCode=?", batchUpdate);
                 log.info("Results have been updated successfully.");
                 return true;
-
             } catch (Exception ee) {
-
                 log.info("Failed to update results");
                 return false;
             }
