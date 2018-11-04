@@ -29,28 +29,28 @@ Data is taken from the resource: *api.football-data.org*
 
  #### Examples:
 ______________________________________________
-**localhost:8080/api/sync**
+**GET localhost:8080/api/sync**
 
 Update data for:
 * tournament: England, Premier League;
 * season: 2018-2019;
 * matchday: all (1-38).
 _____________________________________________
-**localhost:8080/api/sync&tournament=ITSA**
+**GET localhost:8080/api/sync&tournament=ITSA**
 
 Update data for:
 * tournament: Italy, Serie A;
 * season: 2018-2019;
 * matchday: all (1-38).
 _____________________________________________
-**localhost:8080/api/sync&tournament=ENPL?season=2016**
+**GET localhost:8080/api/sync&tournament=ENPL?season=2016**
 
 Update data for:
 * tournament: England, Premier League;
 * season: 2016-2017;
 * matchday: all (1-38).
 _____________________________________________
-**localhost:8080/api/sync&tournament=ESLL?season=2018?matchday=15**
+**GET localhost:8080/api/sync&tournament=ESLL?season=2018?matchday=15**
 
 Update data for:
 * tournament: Spain, La Liga;
