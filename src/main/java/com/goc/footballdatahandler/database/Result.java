@@ -52,6 +52,7 @@ public class Result {
                     match.getScore().getFullTime().getAwayTeam()
             };
 
+            // TODO Add filter for FINISHED games only
             Object[] updateValues = new Object[]{
                     new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(match.getUtcDate().getTime()),
                     match.getScore().getFullTime().getHomeTeam(),

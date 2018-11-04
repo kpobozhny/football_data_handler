@@ -60,7 +60,7 @@ public class SyncController {
         boolean success = result.updateByFootballDataApi(competitionCode, matches);
 
         if (success) {
-            return new Response("200 OK", response.getBody().toString());
+            return new Response("200 OK", "Data have been updated.");
         } else return new Response("500", "Failed to update data!");
 
     }
