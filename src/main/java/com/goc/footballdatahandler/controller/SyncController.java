@@ -7,6 +7,7 @@ import com.goc.footballdatahandler.entity.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -29,10 +30,10 @@ public class SyncController {
     private static final Logger log = LoggerFactory.getLogger(SyncController.class);
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    Result result;
 
     @Autowired
-    Result result;
+    private Environment env;
 
     @RequestMapping("api/sync")
     public Response sync(@RequestParam(value = "season", defaultValue = "2018") String season,
@@ -42,7 +43,7 @@ public class SyncController {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("X-Auth-Token", "f59ef304bfaa44f6bfe56e13ad7290a4");
+        headers.set("X-Auth-Token", env.getProperty("api.football-data.org.token"));
         HttpEntity<String> httpEntity = new HttpEntity<String>(headers);
 
         UriComponentsBuilder builder = UriComponentsBuilder

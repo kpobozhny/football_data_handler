@@ -1,9 +1,7 @@
 package com.goc.footballdatahandler.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by kostya on 9/30/18.
@@ -14,6 +12,7 @@ public class Match {
     private Season season;
     private Calendar utcDate;
     private Integer matchday;
+    private String status;
     private Team homeTeam;
     private Team awayTeam;
     private Score score;
@@ -40,6 +39,10 @@ public class Match {
     public void setUtcDate(Calendar utcDate) {
         this.utcDate = utcDate;
     }
+
+    public String getStatus() { return status; }
+
+    public void setStatus(String status) { this.status = status; }
 
     public Integer getMatchday() {
         return matchday;
@@ -80,6 +83,7 @@ public class Match {
                 ", season=" + season +
                 ", utcDate=" + utcDate +
                 ", matchday=" + matchday +
+                ", status='" + status + '\'' +
                 ", homeTeam=" + homeTeam +
                 ", awayTeam=" + awayTeam +
                 ", score=" + score +

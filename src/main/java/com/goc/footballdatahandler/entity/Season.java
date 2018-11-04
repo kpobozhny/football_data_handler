@@ -23,9 +23,7 @@ public class Season {
         this.id = id;
     }
 
-    public Calendar getStartDate() {
-        return startDate;
-    }
+    public Calendar getStartDate() { return startDate; }
 
     public void setStartDate(Calendar startDate) {
         this.startDate = startDate;
