@@ -14,6 +14,7 @@ CREATE PROCEDURE getBattlesByMatchDay(
   BEGIN
     SELECT
       b.battleCode AS battleCode,
+      b.battleStatusCode AS battleStatusCode,
       b.hostUserCode AS hostUser,
       b.guestUserCode AS guestUser,
       getUserGoalsByBattleCode(b.hostUserCode, b.battleCode) AS hostGoals,
