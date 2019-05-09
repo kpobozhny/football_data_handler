@@ -191,6 +191,7 @@ CREATE TABLE `Battle` (
   `guestUserCode`   VARCHAR(10) NOT NULL,
   PRIMARY KEY (`battleId`),
   UNIQUE KEY `battleCode` (`battleCode`),
+  UNIQUE KEY `battleRecord` (`contestMatchDay`, `seasonCode`, `contestCode`, `hostUserCode`, `guestUserCode`),
   KEY `FK_battleStatusCode` (`battleStatusCode`),
   KEY `FK_contestSeasonCode` (`seasonCode`),
   KEY `FK_contestCode` (`contestCode`),
