@@ -3,7 +3,7 @@ DROP FUNCTION IF EXISTS getUserGoalsByBattleCode;
 $$
 
 CREATE FUNCTION getUserGoalsByBattleCode(userCode       VARCHAR(10),
-												battleCode VARCHAR(30))
+												battleCode VARCHAR(100))
   RETURNS INT
 DETERMINISTIC
   BEGIN

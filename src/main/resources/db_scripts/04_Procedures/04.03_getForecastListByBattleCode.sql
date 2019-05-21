@@ -6,7 +6,7 @@ DROP PROCEDURE IF EXISTS getForecastListByBattleCode;
 $$
 
 CREATE PROCEDURE getForecastListByBattleCode(
-  IN battleCode VARCHAR(24)
+  IN battleCode VARCHAR(100)
 )
   BEGIN
   
