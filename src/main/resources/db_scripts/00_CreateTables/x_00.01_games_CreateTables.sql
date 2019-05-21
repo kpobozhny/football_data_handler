@@ -181,7 +181,7 @@ CREATE TABLE `BattleStatus` (
 -- create 'Battle' table
 CREATE TABLE `Battle` (
   `battleId`     BIGINT(20) NOT NULL AUTO_INCREMENT,
-  `battleCode`   VARCHAR(30) NOT NULL,
+  `battleCode`   VARCHAR(100) NOT NULL,
   `battleStatusCode` VARCHAR(2)  NOT NULL,
   `date`         DATETIME            DEFAULT NULL,
   `contestMatchDay`     TINYINT(4) NOT NULL,
@@ -212,7 +212,7 @@ CREATE TABLE `Forecast` (
   `userCode`   VARCHAR(12)       NOT NULL,
   `forecastStatusCode` VARCHAR(2)  NOT NULL,
   `forecastModified`         DATETIME            DEFAULT NULL,
-  `battleCode`   VARCHAR(24)         NOT NULL,
+  `battleCode`   VARCHAR(100)         NOT NULL,
   `fResultCode`   VARCHAR(24)         NOT NULL,
   `fGoalsByHost` TINYINT(4)          DEFAULT NULL,
   `fGoalsByGuest`  TINYINT(4)          DEFAULT NULL,
