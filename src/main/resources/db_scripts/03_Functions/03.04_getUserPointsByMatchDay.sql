@@ -22,7 +22,7 @@ DETERMINISTIC
            FROM Battle b
            WHERE b.seasonCode = seasonCode
              AND b.contestCode = contestCode
-             AND b.battleCode <= matchDay
+             AND b.contestMatchDay <= matchDay
              AND b.battleStatusCode='ED'
              AND b.hostUserCode=userCode
 
@@ -36,7 +36,7 @@ DETERMINISTIC
            FROM Battle b
            WHERE b.seasonCode = seasonCode
              AND b.contestCode = contestCode
-             AND b.battleCode <= matchDay
+             AND b.contestMatchDay <= matchDay
 			 AND b.battleStatusCode='ED'
              AND b.guestUserCode=userCode
          ) Points;
